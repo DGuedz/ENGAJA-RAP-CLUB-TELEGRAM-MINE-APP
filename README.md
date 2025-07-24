@@ -252,7 +252,6 @@ Adoramos contribuições! Veja como você pode ajudar:
 * 📱 **Canal Telegram**: <https://t.me/engajarapclub>
 * 🐦 **Twitter**: <https://x.com/dg_doublegreen>
 * 💼 **LinkedIn**: <https://linkedin.com/company/engaja-rap-club>
-* 📋 **Devpost**: <https://devpost.com/software/engaja-rap-club>
 * 💬 **Discord**: <https://discord.gg/engajarapclub>
 
 ***
@@ -289,9 +288,7 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICE
 
 * 📧 Email: <contato@engajarap.club>
 * 📱 Telegram: [@dguedz](https://t.me/dguedz)
-* 💼 Negócios: <business@engajarap.club>
-* 🛠️ Suporte Técnico: <dev@engajarap.club>
-
+* 💼 Negócios: <dguedz07@
 ***
 
 **🎤 ENGAJA RAP CLUB - DEMOCRATIZANDO O SUCESSO MUSICAL 🎤**
