@@ -1,0 +1,235 @@
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.19;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
+/**
+ * @title BSTR Token - Brazilian Street Rap Token
+ * @dev Token principal do Engaja Rap Club
+ * @author Engaja Rap Club Team
+ */
+contract BSTRToken is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ReentrancyGuard {
+    using SafeMath for uint256;
+
+    // =============================================================================
+    // CONSTANTS
+    // =============================================================================
+    
+    uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10**18; // 1 bilhão de tokens
+    uint256 public constant INITIAL_SUPPLY = 100_000_000 * 10**18; // 100 milhões iniciais
+    
+    // Taxas em pontos base (10000 = 100%)
+    uint256 public constant TRANSFER_FEE_RATE = 100; // 1%
+    uint256 public constant BURN_FEE_RATE = 50; // 0.5%
+    uint256 public constant COMMUNITY_FEE_RATE = 50; // 0.5%
+    
+    // =============================================================================
+    // STATE VARIABLES
+    // =============================================================================
+    
+    mapping(address => bool) public isBlacklisted;
+    mapping(address => bool) public isWhitelisted;
+    mapping(address => bool) public isMinter;
+    mapping(address => uint256) public lastTransfer;
+    mapping(address => uint256) public userLevel;
+    mapping(address => uint256) public totalEarned;
+    mapping(address => uint256) public totalSpent;
+    
+    address public treasuryWallet;
+    address public communityWallet;
+    address public stakingContract;
+    address public campaignContract;
+    
+    uint256 public totalBurned;
+    uint256 public totalFeesCollected;
+    uint256 public transferCooldown = 1 minutes;
+    
+    bool public feesEnabled = true;
+    bool public transferLimitsEnabled = true;
+    
+    // =============================================================================
+    // EVENTS
+    // =============================================================================
+    
+    event AddressBlacklisted(address indexed account, bool status);
+    event AddressWhitelisted(address indexed account, bool status);
+    event MinterUpdated(address indexed account, bool status);
+    event UserLevelUpdated(address indexed user, uint256 newLevel);
+    event TokensEarned(address indexed user, uint256 amount, string source);
+    event TokensSpent(address indexed user, uint256 amount, string purpose);
+    event FeesCollected(address indexed from, uint256 transferFee, uint256 burnFee, uint256 communityFee);
+    event TreasuryWalletUpdated(address indexed oldWallet, address indexed newWallet);
+    event CommunityWalletUpdated(address indexed oldWallet, address indexed newWallet);
+    event StakingContractUpdated(address indexed oldContract, address indexed newContract);
+    event CampaignContractUpdated(address indexed oldContract, address indexed newContract);
+    
+    // =============================================================================
+    // MODIFIERS
+    // =============================================================================
+    
+    modifier notBlacklisted(address account) {
+        require(!isBlacklisted[account], "BSTR: Account is blacklisted");
+        _;
+    }
+    
+    modifier onlyMinter() {
+        require(isMinter[msg.sender] || msg.sender == owner(), "BSTR: Not authorized to mint");
+        _;
+    }
+    
+    modifier respectsCooldown(address account) {
+        if (transferLimitsEnabled && !isWhitelisted[account]) {
+            require(
+                block.timestamp >= lastTransfer[account].add(transferCooldown),
+                "BSTR: Transfer cooldown not expired"
+            );
+        }
+        _;
+    }
+    
+    // =============================================================================
+    // CONSTRUCTOR
+    // =============================================================================
+    
+    constructor(
+        address _treasuryWallet,
+        address _communityWallet
+    ) ERC20("Brazilian Street Rap Token", "BSTR") {
+        require(_treasuryWallet != address(0), "BSTR: Treasury wallet cannot be zero address");
+        require(_communityWallet != address(0), "BSTR: Community wallet cannot be zero address");
+        
+        treasuryWallet = _treasuryWallet;
+        communityWallet = _communityWallet;
+        
+        // Mint initial supply to treasury
+        _mint(_treasuryWallet, INITIAL_SUPPLY);
+        
+        // Whitelist important addresses
+        isWhitelisted[_treasuryWallet] = true;
+        isWhitelisted[_communityWallet] = true;
+        isWhitelisted[owner()] = true;
+        
+        // Set initial minter
+        isMinter[owner()] = true;
+        
+        emit AddressWhitelisted(_treasuryWallet, true);
+        emit AddressWhitelisted(_communityWallet, true);
+        emit AddressWhitelisted(owner(), true);
+        emit MinterUpdated(owner(), true);
+    }
+    
+    // =============================================================================
+    // MINTING FUNCTIONS
+    // =============================================================================
+    
+    /**
+     * @dev Mint tokens for engagement rewards
+     */
+    function mintReward(address to, uint256 amount, string memory source) 
+        external 
+        onlyMinter 
+        notBlacklisted(to) 
+    {
+        require(to != address(0), "BSTR: Cannot mint to zero address");
+        require(amount > 0, "BSTR: Amount must be greater than zero");
+        require(totalSupply().add(amount) <= MAX_SUPPLY, "BSTR: Would exceed max supply");
+        
+        _mint(to, amount);
+        
+        totalEarned[to] = totalEarned[to].add(amount);
+        _updateUserLevel(to);
+        
+        emit TokensEarned(to, amount, source);
+    }
+    
+    /**
+     * @dev Batch mint for campaign rewards
+     */
+    function batchMintRewards(
+        address[] memory recipients,
+        uint256[] memory amounts,
+        string memory source
+    ) external onlyMinter {
+        require(recipients.length == amounts.length, "BSTR: Arrays length mismatch");
+        require(recipients.length <= 100, "BSTR: Too many recipients");
+        
+        uint256 totalAmount = 0;
+        for (uint256 i = 0; i < amounts.length; i++) {
+            totalAmount = totalAmount.add(amounts[i]);
+        }
+        
+        require(totalSupply().add(totalAmount) <= MAX_SUPPLY, "BSTR: Would exceed max supply");
+        
+        for (uint256 i = 0; i < recipients.length; i++) {
+            if (!isBlacklisted[recipients[i]] && recipients[i] != address(0) && amounts[i] > 0) {
+                _mint(recipients[i], amounts[i]);
+                totalEarned[recipients[i]] = totalEarned[recipients[i]].add(amounts[i]);
+                _updateUserLevel(recipients[i]);
+                emit TokensEarned(recipients[i], amounts[i], source);
+            }
+        }
+    }
+    
+    // =============================================================================
+    // TRANSFER FUNCTIONS
+    // =============================================================================
+    
+    function transfer(address to, uint256 amount) 
+        public 
+        override 
+        notBlacklisted(msg.sender) 
+        notBlacklisted(to) 
+        respectsCooldown(msg.sender)
+        returns (bool) 
+    {
+        uint256 transferAmount = amount;
+        
+        if (feesEnabled && !isWhitelisted[msg.sender] && !isWhitelisted[to]) {
+            transferAmount = _deductFees(msg.sender, amount);
+        }
+        
+        lastTransfer[msg.sender] = block.timestamp;
+        totalSpent[msg.sender] = totalSpent[msg.sender].add(amount);
+        
+        return super.transfer(to, transferAmount);
+    }
+    
+    function transferFrom(address from, address to, uint256 amount) 
+        public 
+        override 
+        notBlacklisted(from) 
+        notBlacklisted(to) 
+        respectsCooldown(from)
+        returns (bool) 
+    {
+        uint256 transferAmount = amount;
+        
+        if (feesEnabled && !isWhitelisted[from] && !isWhitelisted[to]) {
+            transferAmount = _deductFees(from, amount);
+        }
+        
+        lastTransfer[from] = block.timestamp;
+        totalSpent[from] = totalSpent[from].add(amount);
+        
+        return super.transferFrom(from, to, transferAmount);
+    }
+    
+    /**
+     * @dev Internal function to deduct fees
+     */
+    function _deductFees(address from, uint256 amount) internal returns (uint256) {
+        uint256 transferFee = amount.mul(TRANSFER_FEE_RATE).div(10000);
+        uint256 burnFee = amount.mul(BURN_FEE_RATE).div(10000);
+        uint256 communityFee = amount.mul(COMMUNITY_FEE_RATE).div(10000);
+        
+        uint256 totalFees = transferFee.add(burnFee).add(communityFee);
+        
+        if (totalFees > 0) {
+            // Transfer fees to treasury
+```
