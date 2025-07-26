@@ -1,0 +1,285 @@
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables */
+:root {
+  /* Brand Colors */
+  --color-primary: #ef4444;
+  --color-secondary: #64748b;
+  --color-accent: #c651f5;
+  
+  /* Telegram Colors */
+  --color-telegram-bg: #17212b;
+  --color-telegram-secondary: #232e3c;
+  --color-telegram-text: #ffffff;
+  --color-telegram-hint: #708499;
+  --color-telegram-link: #5288c1;
+  --color-telegram-button: #5288c1;
+  
+  /* TON Network Colors */
+  --color-ton-blue: #0098ea;
+  --color-ton-dark-blue: #0077c7;
+  
+  /* Music Beat Colors */
+  --color-beat-red: #ff1744;
+  --color-beat-orange: #ff6f00;
+  --color-beat-yellow: #ffc107;
+  --color-beat-green: #4caf50;
+  --color-beat-purple: #9c27b0;
+}
+
+/* Dark Mode Variables */
+.dark {
+  --color-telegram-bg: #17212b;
+  --color-telegram-secondary: #232e3c;
+  --color-telegram-text: #ffffff;
+  --color-telegram-hint: #708499;
+}
+
+/* Base Styles */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Telegram WebApp specific styles */
+  .telegram-webapp {
+    @apply bg-telegram-bg text-telegram-text;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+  
+  /* Selection styles */
+  ::selection {
+    @apply bg-primary-500/20 text-primary-900;
+  }
+  
+  .dark ::selection {
+    @apply bg-primary-400/20 text-primary-100;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply backdrop-blur-lg bg-white/10 dark:bg-black/10 border border-white/20 dark:border-white/10;
+  }
+  
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
+  }
+  
+  /* Beat animation */
+  .beat-animation {
+    animation: beat 1s ease-in-out infinite alternate;
+  }
+  
+  @keyframes beat {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+  }
+  
+  /* Music visualizer bars */
+  .music-bar {
+    @apply bg-gradient-to-t from-primary-500 to-accent-500 rounded-sm;
+    animation: musicBar 1.5s ease-in-out infinite alternate;
+  }
+  
+  .music-bar:nth-child(2) { animation-delay: 0.1s; }
+  .music-bar:nth-child(3) { animation-delay: 0.2s; }
+  .music-bar:nth-child(4) { animation-delay: 0.3s; }
+  .music-bar:nth-child(5) { animation-delay: 0.4s; }
+  
+  @keyframes musicBar {
+    0% { height: 20%; }
+    50% { height: 70%; }
+    100% { height: 100%; }
+  }
+  
+  /* Button styles */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600 hover:from-secondary-600 hover:to-secondary-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-ghost {
+    @apply bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium px-6 py-3 rounded-lg transition-all duration-200 border border-gray-300 dark:border-gray-600;
+  }
+  
+  /* Card styles */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-xl;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-xl;
+  }
+  
+  /* Input styles */
+  .input {
+    @apply w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+  }
+  
+  /* Avatar styles */
+  .avatar {
+    @apply w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold;
+  }
+  
+  .avatar-lg {
+    @apply w-16 h-16 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold text-xl;
+  }
+  
+  /* Loading spinner */
+  .spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary-500;
+  }
+  
+  /* Telegram-specific styles */
+  .telegram-button {
+    @apply bg-telegram-button hover:opacity-80 text-white font-medium px-6 py-3 rounded-lg transition-opacity duration-200;
+  }
+  
+  .telegram-card {
+    @apply bg-telegram-secondary rounded-lg p-4 border border-gray-600;
+  }
+}
+
+/* Utility Styles */
+@layer utilities {
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Text gradient utilities */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-700 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-rainbow {
+    @apply bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 bg-clip-text text-transparent;
+  }
+  
+  /* Background utilities */
+  .bg-music-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ef4444' fill-opacity='0.05'%3E%3Cpath d='M20 20c0-8.837 7.163-16 16-16v16H20z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  
+  @keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .mobile-padding {
+    @apply px-4;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    @apply border-2;
+  }
+  
+  .btn-primary {
+    @apply border-2 border-primary-700;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
