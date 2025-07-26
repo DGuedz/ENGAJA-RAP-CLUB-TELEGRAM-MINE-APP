@@ -4,7 +4,8 @@
 
 [![TON Network](https://img.shields.io/badge/TON-Network-blue)](https://ton.org) [![Telegram](https://img.shields.io/badge/Telegram-Mini%20App-26A5E4)](https://t.me/engajarapclub_bot) [![React](https://img.shields.io/badge/React-19.0-61DAFB)](https://react.dev) [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6)](https://typescriptlang.org) [![Licença](https://img.shields.io/badge/Licen%C3%A7a-MIT-green.svg)](LICENSE)
 
-[🚀 Demo ao Vivo](https://t.me/engajarapclub_bot) • [📚 Documentação](https://docs.engajarap.club) • [💬 Discord](https://discord.gg/engajarapclub)
+[Demo]
+([https://t.me/engajarapclub_bot](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:WxP75D8-l-YPWPR5VqpOb)) • [📚 Documentação](https://docs.engajarap.club) • [💬 Discord](https://discord.gg/engajarapclub)
 
 ***
 
