@@ -1,0 +1,90 @@
+```html
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Engaja Rap Club - A Primeira Plataforma Web3 Musical do Rap Brasileiro</title>
+    <meta name="title" content="Engaja Rap Club - A Primeira Plataforma Web3 Musical do Rap Brasileiro">
+    <meta name="description" content="Conecte-se com a cultura do rap brasileiro através da blockchain TON Network. Descubra artistas, ganhe tokens BSTR e participe da revolução musical Web3.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://engajarap.club/">
+    <meta property="og:title" content="Engaja Rap Club - A Primeira Plataforma Web3 Musical do Rap Brasileiro">
+    <meta property="og:description" content="Conecte-se com a cultura do rap brasileiro através da blockchain TON Network. Descubra artistas, ganhe tokens BSTR e participe da revolução musical Web3.">
+    <meta property="og:image" content="https://engajarap.club/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://engajarap.club/">
+    <meta property="twitter:title" content="Engaja Rap Club - A Primeira Plataforma Web3 Musical do Rap Brasileiro">
+    <meta property="twitter:description" content="Conecte-se com a cultura do rap brasileiro através da blockchain TON Network. Descubra artistas, ganhe tokens BSTR e participe da revolução musical Web3.">
+    <meta property="twitter:image" content="https://engajarap.club/og-image.png">
+    
+    <!-- Telegram Mini App -->
+    <meta name="telegram:app_name" content="Engaja Rap Club">
+    <meta name="telegram:app_description" content="A primeira plataforma Web3 musical dedicada ao rap brasileiro">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ef4444">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Engaja Rap Club">
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Telegram Web App Script -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- TON Connect -->
+    <script>
+      // Initialize Telegram WebApp
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+        
+        // Set theme
+        const isDark = window.Telegram.WebApp.colorScheme === 'dark';
+        document.documentElement.classList.toggle('dark', isDark);
+      }
+    </script>
+  </head>
+  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div id="root"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center z-50">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+        <h2 class="text-white text-xl font-bold">Engaja Rap Club</h2>
+        <p class="text-white/80">Carregando...</p>
+      </div>
+    </div>
+    
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Remove loading screen after app loads
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.transition = 'opacity 0.5s ease-out';
+            setTimeout(() => loadingScreen.remove(), 500);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
+```
