@@ -4,7 +4,7 @@
 
 [![TON Ecosystem](https://img.shields.io/badge/TON-Ecosystem-blue)](https://ton.org) [![Hack-a-TON Brasil](https://img.shields.io/badge/Hack--a--TON-Brasil%202025-gold)](https://hackaton.ton.org) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![API Status](https://img.shields.io/badge/API-Live-green)](https://api.engajarap.club)
 
-[🎧 **RÁDIO 24/7**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:oiN1FlnvRu0JHb0sfmxrk) | [📊 **DASHBOARD**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:J9xNaRrt-B68F7W6tjwhp) | [🛠️ **PITCH OFICIAL**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:uPsfLWidYluuMMWQID3Xq) | [🧩 **MVP OFICIAL**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:WxP75D8-l-YPWPR5VqpOb) | [💸 **GATEWAY PIX**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:a5_GzmAn_3svWyuHz_ftU)
+[🎧 **RÁDIO 24/7**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:oiN1FlnvRu0JHb0sfmxrk) | [📊 **DASHBOARD**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:J9xNaRrt-B68F7W6tjwhp) | [🛠️ **PITCH OFICIAL**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:uPsfLWidYluuMMWQID3Xq) | [🧩 **MVP OFICIAL**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:0k6fRfdihHUjj9wVqUhkA) | [💸 **GATEWAY PIX**](https://hatchcanvas.com/public/proj_AwYhvfMidR6YpCUa70h_3/shape:a5_GzmAn_3svWyuHz_ftU)
 
 ***
 
